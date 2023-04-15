@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.imagen-bg{
+    background-image: url("./assets/ciervo_bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.glassmorphism{
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 3px );
+    -webkit-backdrop-filter: blur( 3px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.gradient-bg:hover{
+    background: rgb(36,84,225);
+    background: linear-gradient(90deg, rgba(36,84,225,1) 0%, rgba(163,25,219,1) 14%, rgba(0,255,241,1) 95%);
+}
