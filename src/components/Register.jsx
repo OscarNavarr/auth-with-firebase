@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+// 286
+import React, {useMemo, useState} from 'react'
 import { motion } from 'framer-motion';
 //IMPORT ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -8,11 +9,46 @@ import { Link } from 'react-router-dom';
 
 //IMPORT BUTTONS IMAGES
 import { searchButton, twitterButton } from '../assets/buttons_icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { startCreatingUserWithEmailPassword } from '../store/auth/thunks';
 
 export const Register = () => {
 
   const [visiblePswd, setVisiblePswd] = useState(false);
 
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirPswd, setConfirmPswd] = useState('');
+
+  const dispatch = useDispatch();
+  
+  const{ status, errorMessage } = useSelector( state => state.auth);
+  const isCheckingAuthentication = useMemo( () => status === 'checking', [status]);
+
+
+  // FUNCTION FOR CHANGE EMAIL
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  // FUNCTION FOR CHANGE PASSWORD
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+  // FUNCTION FOR CONFIRM THE PASSWORD
+  const handleConfirmPassword = (event) => {
+    setConfirmPswd(event.target.value);
+  };
+  // FUNCTION FOR CREATE THE USER
+  const onSubmit =(e) => {
+    e.preventDefault();
+    if(password === confirPswd){
+      dispatch( startCreatingUserWithEmailPassword( {email, password} ) );
+    }else{
+      alert("The passwords are not the same");
+    }
+  }
   return (
     <motion.div
       initial={{opacity:0}}
@@ -20,61 +56,64 @@ export const Register = () => {
       transition={{duration:1,delay:0.3}}
     >
       <p className='text-[#5a6263] text-center mt-[2rem] text-[2rem]'>Sign Up</p>
-
-      <div className='flex justify-center mt-[5rem]'>
-        <input
-            type="email" 
-            name='email' 
-            placeholder='Write your email' 
-            className='bg-transparent placeholder-black  w-[17rem] hover:text-center  outline-none border-[#5a6263] border-b-2'
-        />
-      </div>
-      
-      <div className='flex justify-center mt-[2rem]'>
-        <input 
-            type="password" 
-            name='password' 
-            placeholder='Write your password' 
-            className='bg-transparent placeholder-black w-[15rem] hover:text-center outline-none border-[#5a6263] border-b-2'
-        />
-        <button className=' border-[#5a6263] border-b-2'>
-            {
-                visiblePswd ? 
-                    <AiOutlineEye onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
-                :
-                    <AiOutlineEyeInvisible onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
-            }
-            
-        </button>
-      </div>
-      <div className='flex justify-center mt-[2rem]'>
-        <input 
-            type="password" 
-            name='password' 
-            placeholder='Confirm your password' 
-            className='bg-transparent placeholder-black w-[15rem] hover:text-center outline-none border-[#5a6263] border-b-2'
-        />
-        <button className=' border-[#5a6263] border-b-2'>
-            {
-                visiblePswd ? 
-                    <AiOutlineEye onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
-                :
-                    <AiOutlineEyeInvisible onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
-            }
-            
-        </button>
-      </div>
-
-      <div className='flex justify-center mt-10'>
-          <button className='bg-[#5a6263] hover:bg-[#484e4f] hover:cursor-pointer text-white text-[1.5rem] text-center py-1 rounded-[.8rem] w-[9rem] h-[3rem] '>
-            Sign up
+      <form onSubmit={onSubmit}>
+        <div className='flex justify-center mt-[5rem]'>
+          <input
+              type="email" 
+              name='email' 
+              onChange={handleEmailChange}
+              placeholder='Write your email' 
+              className='bg-transparent placeholder-black  w-[17rem] hover:text-center  outline-none border-[#5a6263] border-b-2'
+          />
+        </div>
+        
+        <div className='flex justify-center mt-[2rem]'>
+          <input 
+              type="password" 
+              name='password' 
+              onChange={handlePasswordChange}
+              placeholder='Write your password' 
+              className='bg-transparent placeholder-black w-[15rem] hover:text-center outline-none border-[#5a6263] border-b-2'
+          />
+          <button className=' border-[#5a6263] border-b-2'>
+              {
+                  visiblePswd ? 
+                      <AiOutlineEye onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
+                  :
+                      <AiOutlineEyeInvisible onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
+              }
+              
           </button>
-      </div>
+        </div>
+        <div className='flex justify-center mt-[2rem]'>
+          <input 
+              type="password" 
+              name="password"
+              onChange={handleConfirmPassword} 
+              placeholder='Confirm your password' 
+              className='bg-transparent placeholder-black w-[15rem] hover:text-center outline-none border-[#5a6263] border-b-2'
+          />
+          <button className=' border-[#5a6263] border-b-2'>
+              {
+                  visiblePswd ? 
+                      <AiOutlineEye onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
+                  :
+                      <AiOutlineEyeInvisible onClick={() => setVisiblePswd(!visiblePswd)} className='w-[2rem] h-[2rem] text-[#5a6263]'/> 
+              }
+              
+          </button>
+        </div>
 
+        <div className='flex justify-center mt-10'>
+            <button type="submit" className='bg-[#5a6263] hover:bg-[#484e4f] hover:cursor-pointer text-white text-[1.5rem] text-center py-1 rounded-[.8rem] w-[9rem] h-[3rem] '>
+              Sign up
+            </button>
+        </div>
+      </form>
       <div className='flex justify-around px-4 md:px-[6.4rem] mt-4'>
           <div className=' border-[#5a6263] mb-[0.7rem] border-b-2 w-[5rem]'/>
           <div>
-              <p className='pt-0'>or sign up with</p>
+              <p className='pt-0'>or sign up with { errorMessage}</p>
           </div>
           <span className=' border-[#5a6263] mb-[0.7rem] border-b-2 w-[5rem]'/>
       </div>
