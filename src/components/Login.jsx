@@ -6,7 +6,7 @@ import { checkingAuthentication, startGoogleSignIn, startLoginWithEmailPassword,
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 //IMPORT REACT-ROUTER-DOM
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 //IMPORT BUTTONS IMAGES
 import { searchButton, twitterButton } from '../assets/buttons_icons';
@@ -22,6 +22,7 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
+    const navigate = useNavigate();
     
     const dispatch = useDispatch();
 
@@ -42,12 +43,14 @@ export const Login = () => {
     };
 
     // FUNCTION TO MANAGE EMAIL AND PASSWORD
-    const onSubmit =(e) => {
+    const onSubmit = async(e) => {
         e.preventDefault();
         
         dispatch( startLoginWithEmailPassword({email, password}));
 
         if(errorMessage){alert(errorMessage)};
+
+        //navigate('/home/'+ email);
     }
     // SIGN IN WITH GOOGLE
     const onGoogleSignIn = () => {
