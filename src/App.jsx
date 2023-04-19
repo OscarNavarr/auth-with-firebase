@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { LoginPage} from './pages/index';
-import { Login, Register } from './components';
+import { HomeSection, Login, Register } from './components';
 
 function App() {
 
@@ -13,6 +13,7 @@ function App() {
             <Route path='/' element={<Login/>} />
             <Route path='register' element={<Register/>} />
           </Route>
+          <Route path='/home' element={<HomeSection/>}/>
         </Routes>
       
       </Router>
