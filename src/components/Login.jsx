@@ -50,7 +50,7 @@ export const Login = () => {
 
         if(errorMessage){alert(errorMessage)};
 
-        //navigate('/home/'+ email);
+        navigate('/');
     }
     // SIGN IN WITH GOOGLE
     const onGoogleSignIn = () => {
@@ -133,7 +133,7 @@ export const Login = () => {
           </button>
       </div>
       <div className='flex justify-center mt-5 mb-2'>
-          <Link to={"/register"} className="mx-auto">Create an accound</Link>
+          <Link to={"/authentication/register"} className="mx-auto">Create an accound</Link>
       </div>
 
     </motion.div>

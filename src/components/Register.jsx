@@ -133,7 +133,7 @@ export const Register = () => {
           </button>
       </div>
       <div className='flex justify-center mt-5 mb-2'>
-          <Link to={"/"} className="mx-auto">Go to Sign in page</Link>
+          <Link to={"/authentication/login"} className="mx-auto">Go to Sign in page</Link>
       </div>
     </motion.div>
   )

@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import React from 'react'
 
-export const HomeSection = (props) => {
-  const [user, setUser] = useState('');
-  useEffect(() => {
-    const {userAuth} = useParams();
-    setUser(userAuth);
-   
-  }, [])
+export const HomeSection = () => {
   
   return (
-    <div>Home section {user}</div>
+    <div>Home section</div>
   )
 }
