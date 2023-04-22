@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import { LoginPage} from './pages/index';
 import { HomeSection, Login, Register } from './components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseAuth } from './firebase/config';
 import { login, logout } from './store/auth/authSlice';
-import { PrivateRoutes } from './utils/PrivateRoutes';
+//import { PrivateRoutes } from './utils/PrivateRoutes';
 
 function App() {
   const { status} = useSelector( state => state.auth);
@@ -34,15 +34,21 @@ function App() {
         
         <Routes>
             
+            {
+              (status === 'authenticated')
+                ? <Route path='/*' element={<HomeSection/>}/>
+                : (
+                  <Route path='/authentication' element={<LoginPage/>}>
+                    <Route path='/authentication/login' element={<Login/>} />
+                    <Route path='/authentication/register' element={<Register/>} />
+                  </Route> 
+                )
+            }
+           
+              
             
-            <Route element={<PrivateRoutes/>}>
-              <Route path='/' element={<HomeSection/>}/>
-            </Route>
+             <Route path='/*' element={<Navigate to={'/authentication/login'}/>}/>
              
-            <Route path='/authentication' element={<LoginPage/>}>
-              <Route path='/authentication/login' element={<Login/>} />
-              <Route path='/authentication/register' element={<Register/>} />
-            </Route>  
               
               
         </Routes>
