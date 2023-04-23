@@ -14,11 +14,6 @@ export const startGoogleSignIn = () => {
         dispatch(login( result ))
     }
 }
-export const startTwitterSignIn = () => {
-    return async( dispatch ) => {
-        dispatch( checkingCredentials() );
-    }
-}
 export const startCreatingUserWithEmailPassword = ({ email, password }) => {
     return async( dispatch ) => {
 

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { checkingAuthentication, startGoogleSignIn, startLoginWithEmailPassword, startTwitterSignIn } from '../store/auth/thunks';
+import { startGoogleSignIn, startLoginWithEmailPassword} from '../store/auth/thunks';
 
 //IMPORT ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -9,7 +9,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
 
 //IMPORT BUTTONS IMAGES
-import { searchButton, twitterButton } from '../assets/buttons_icons';
+import { searchButton } from '../assets/buttons_icons';
 
 //IMPORT MOTION
 import {motion} from 'framer-motion';
@@ -45,25 +45,22 @@ export const Login = () => {
     // FUNCTION TO MANAGE EMAIL AND PASSWORD
     const onSubmit = async(e) => {
         e.preventDefault();
-        
+        setVisiblePswd(false);
         dispatch( startLoginWithEmailPassword({email, password}));
 
-        if(errorMessage){alert(errorMessage)};
+        if(errorMessage){
+            navigate('/');
+        }else{
+            return
+        }
 
-        navigate('/');
     }
+
     // SIGN IN WITH GOOGLE
     const onGoogleSignIn = () => {
-        console.log('Google Sign In')
         
         dispatch(startGoogleSignIn());
         
-    }
-    
-    // SIGN IN WITH LINKEDIN
-    const onTwitterSignIn = () => {
-        console.log('Twitter Sign In')
-        dispatch(startTwitterSignIn());
     }
   return (
     <motion.div
@@ -72,6 +69,17 @@ export const Login = () => {
         transition={{duration:1,delay:0.3}}
     >
       <p className='text-[#5a6263] text-center mt-[2rem] text-[2rem]'>Sign In</p>
+    {
+        errorMessage && (
+        <motion.div 
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{duration:0.7}}
+            className='bg-red-400 min-h-[3rem] max-w-[15rem] rounded-lg mx-auto mt-5'
+        >
+            <p className='text-white text-[1.1rem] text-center'>{errorMessage}</p>
+        </motion.div>
+    )}
         <form onSubmit={onSubmit}>
             <div className='flex justify-center mt-[5rem]'>
                     <input 
@@ -127,9 +135,6 @@ export const Login = () => {
       <div className='flex justify-center mt-10'>
           <button disabled={isAuthenticating} onClick={onGoogleSignIn} className='border-[#5a6263] border-2 p-2 rounded-lg' >
               <img src={searchButton} alt='google logo' className='w-[2.5rem]  h-[2.5rem]'/>
-          </button>
-          <button disabled={isAuthenticating}  onClick={onTwitterSignIn} className='border-[#5a6263] border-2 p-2 ml-5 rounded-lg' >
-              <img src={twitterButton} alt='google logo' className='w-[2.5rem] h-[2.5rem]'/>
           </button>
       </div>
       <div className='flex justify-center mt-5 mb-2'>

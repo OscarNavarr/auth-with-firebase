@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 //IMPORT REACT-ROUTER-DOM
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 //IMPORT BUTTONS IMAGES
-import { searchButton, twitterButton } from '../assets/buttons_icons';
+import { searchButton } from '../assets/buttons_icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { startCreatingUserWithEmailPassword } from '../store/auth/thunks';
 
@@ -21,9 +21,11 @@ export const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirPswd, setConfirmPswd] = useState('');
+  const [ errorPswd, setErrorPswd ] = useState('');
 
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+
   // obtener los errores de firebase
   const{ status, errorMessage } = useSelector( state => state.auth); 
 
@@ -47,14 +49,19 @@ export const Register = () => {
   // FUNCTION FOR CREATE THE USER
   const onSubmit =async(e) => {
     e.preventDefault();
+    setVisiblePswd(false);
     if(password === confirPswd){
       dispatch( startCreatingUserWithEmailPassword( {email, password} ) );
 
+      if(errorMessage){
+        navigate('/');
+      };
     }else{
-      alert("The passwords are not the same");
+      setErrorPswd('The passwords are not the same');
     }
 
   }
+  
   return (
     <motion.div
       initial={{opacity:0}}
@@ -62,6 +69,17 @@ export const Register = () => {
       transition={{duration:1,delay:0.3}}
     >
       <p className='text-[#5a6263] text-center mt-[2rem] text-[2rem]'>Sign Up</p>
+      {
+        errorMessage || errorPswd && (
+        <motion.div 
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            transition={{duration:0.7}}
+            className='bg-red-400 min-h-[3rem] max-w-[15rem] rounded-lg mx-auto mt-5'
+        >
+            <p className='text-white text-[1.1rem] text-center'>{errorMessage ? errorMessage : errorPswd }</p>
+        </motion.div>
+      )}
       <form onSubmit={onSubmit}>
         <div className='flex justify-center mt-[5rem]'>
           <input
@@ -116,22 +134,7 @@ export const Register = () => {
             </button>
         </div>
       </form>
-      <div className='flex justify-around px-4 md:px-[6.4rem] mt-4'>
-          <div className=' border-[#5a6263] mb-[0.7rem] border-b-2 w-[5rem]'/>
-          <div>
-              <p className='pt-0'>or sign up with</p>
-          </div>
-          <span className=' border-[#5a6263] mb-[0.7rem] border-b-2 w-[5rem]'/>
-      </div>
-
-      <div className='flex justify-center mt-10'>
-          <button disabled={isCheckingAuthentication} className='border-[#5a6263] border-2 p-2 rounded-lg' >
-              <img src={searchButton} alt='google logo' className='w-[2.5rem]  h-[2.5rem]'/>
-          </button>
-          <button disabled={isCheckingAuthentication} className='border-[#5a6263] border-2 p-2 ml-5 rounded-lg' >
-              <img src={twitterButton} alt='twitter logo' className='w-[2.5rem] h-[2.5rem]'/>
-          </button>
-      </div>
+      
       <div className='flex justify-center mt-5 mb-2'>
           <Link to={"/authentication/login"} className="mx-auto">Go to Sign in page</Link>
       </div>
