@@ -33,16 +33,17 @@ export const registerUserWithEmailPassword = async({email,password}) => {
     try{
 
         const resp = await createUserWithEmailAndPassword( FirebaseAuth, email, password );
-        const {uid, photoURL} = resp.user;
-
+        
         await updateEmail( FirebaseAuth.currentUser, email );
-
+        
+        const { uid, photoURL, displayName } = resp.user;
+        
         return { 
             ok: true,
-            displayName:"",
+            displayName,
             uid,
             photoURL,
-            email,
+            email: resp.user.email,
         }
 
     }catch (error) {
@@ -53,7 +54,7 @@ export const registerUserWithEmailPassword = async({email,password}) => {
 export const loginUserWithEmailPassword = async({ email, password }) => {
     try {
         const resp = await signInWithEmailAndPassword( FirebaseAuth, email, password );
-        const{uid, photoURL, displayName} = resp.user;
+        const { uid, photoURL, displayName } = resp.user;
         return { 
             ok: true,
             displayName,

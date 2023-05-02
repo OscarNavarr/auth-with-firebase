@@ -4,24 +4,32 @@ import { AiOutlineUser } from "react-icons/ai";
 import { logout } from "../../store/auth/authSlice"
 import { useNavigate } from 'react-router-dom';
 
+import { AiOutlinePlus } from "react-icons/ai";
+
 export const HomeSection = () => {
   const { email, displayName, photoURL } = useSelector( state => state.auth );
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/authentication/login');
   }
+  console.log(photoURL,email)
   return (
     <div className='h-screen flex justify-center items-center'>
     
       <div>
-        <div className='mx-auto rounded-full w-[10rem] h-[10rem]'>
+        <div className='mx-auto relative rounded-full w-[10rem] h-[10rem]'>
           {
             photoURL 
             ? <img src={photoURL} alt='logo' className='rounded-full w-[10rem] h-[10rem] bg-black'/>
-            : <AiOutlineUser className='w-[10rem] h-[10rem] rounded-full'/>
+            : <AiOutlineUser className='w-[10rem] h-[10rem] p-2 border-[0.1rem]  rounded-full'/>
+          }
+          {
+            !photoURL && <button><AiOutlinePlus className='absolute right-0  outline outline-white outline-offset-2 outline-4  left-0 mx-auto bottom-[-1rem] z-50 bg-white h-9 w-9 rounded-full border-[0.1rem]'/></button>
           }
         </div>
         
